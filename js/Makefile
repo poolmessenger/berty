@@ -249,7 +249,7 @@ daemon.start.docker:
 
 ##### pbjs
 
-pbjs_flags := -p ../api -p node_modules/@googleapis/googleapis -p `cd ..; go list -m -mod=mod -f {{.Dir}} github.com/grpc-ecosystem/grpc-gateway`/third_party/googleapis -p `cd ..; go list -m -mod=mod -f {{.Dir}} github.com/gogo/protobuf` -p node_modules/@protocolbuffers/protobuf/src
+pbjs_flags := -p ../api -p node_modules/@googleapis/googleapis -p `go list -m -modfile=../go.mod -mod=mod -f {{.Dir}} github.com/grpc-ecosystem/grpc-gateway`/third_party/googleapis -p `go list -m -modfile=../go.mod -mod=mod -f {{.Dir}} github.com/gogo/protobuf` -p node_modules/@protocolbuffers/protobuf/src
 .PHONY: _gen.pbjs
 _gen.pbjs:
 	pbjs $(pbjs_flags) --no-comments --es6 -w es6 -t json-module   -o packages/api/index.pb.js ../api/bertybridge.proto ../api/bertyprotocol.proto ../api/bertymessenger.proto
@@ -264,7 +264,7 @@ _gen.config:
 
 _gen.locale:
 	mkdir -p ./packages/berty-i18n/locale/debug
-	cd .. && go run ./tool/generate-i18n-testlang/main.go -source=./js/packages/berty-i18n/locale/en/messages.json > ./js/packages/berty-i18n/locale/debug/messages.json
+	go run -modfile=../go.mod ../tool/generate-i18n-testlang/main.go -source=./packages/berty-i18n/locale/en/messages.json > ./packages/berty-i18n/locale/debug/messages.json
 
 ##### gen.sum
 
@@ -286,15 +286,15 @@ _write_gen_sum:
 #### iOS
 
 ios/Frameworks/Bertybridge.framework: $(bridge_src)
-	cd .. && go mod download
-	cd .. && go run golang.org/x/mobile/cmd/gomobile init
+	go mod download -modfile=../go.mod
+	go run -modfile=../go.mod golang.org/x/mobile/cmd/gomobile init
 	@mkdir -p "ios/Frameworks"
-	cd .. && GO111MODULE=on go run golang.org/x/mobile/cmd/gomobile bind \
-		-o js/$@ \
+	GO111MODULE=on go run -modfile=../go.mod golang.org/x/mobile/cmd/gomobile bind \
+		-o $@ \
 		-v $(ext_ldflags) \
 		-target ios \
 		-iosversion $(minimum_ios_ver) \
-		./go/framework/bertybridge
+		../go/framework/bertybridge
 	touch $@
 
 ios/Berty.xcworkspace: $(pkg_desc) ios/Berty.xcodeproj ios/Podfile vendor/bundle
@@ -330,16 +330,16 @@ vendor/bundle: Gemfile
 #### Android
 
 android/libs/gobridge.aar: $(bridge_src)
-	cd .. && go mod download
-	cd .. && go run golang.org/x/mobile/cmd/gomobile init
+	go mod download -modfile=../go.mod
+	go run -modfile=../go.mod golang.org/x/mobile/cmd/gomobile init
 	rm -fr android/build # remove broken cache
 	@mkdir -p "android/libs"
-	cd .. && GO111MODULE=on go run golang.org/x/mobile/cmd/gomobile bind \
-		-o js/$@ \
+	GO111MODULE=on go run -modfile=../go.mod golang.org/x/mobile/cmd/gomobile bind \
+		-o $@ \
 		-v $(ext_ldflags) \
 		-target android \
 		-androidapi $(minimum_android_ver) \
-		./go/framework/bertybridge
+		../go/framework/bertybridge
 	touch $@
 
 android/app/debug.keystore:
@@ -353,3 +353,8 @@ $(pkg_mod): $(pkg_desc)
 	mkdir -p $(pkg_mod)
 	touch $(pkg_mod)
 	touch node_modules/go.mod # avoid go to lookup in this directorys
+
+#### Debug
+
+print-%:
+	@echo $* = $($*)
