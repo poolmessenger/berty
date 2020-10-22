@@ -12,7 +12,7 @@
       "performance": {
         "title": "Performance",
         "desc": "Easy to use - All the features",
-        "push-notif": "Receive push notifications",
+        "push-notif": "Easy to use - All the features",
         "offline-message": "Offline messaging",
         "add-contact": "Add contacts easily",
         "fast-message": "Fastest message delivery"
@@ -45,7 +45,7 @@
       "skip": "SKIP AND DO THIS LATER"
     },
     "bluetooth": {
-      "header": "Communicate without an internet connection (wifi or data) by connecting your phone directly with peers nearby",
+      "header": "",
       "optional": "Optional",
       "title": "Bluetooth",
       "desc": "To use this feature you need to autorize the use of Bluetooth on your phone",
