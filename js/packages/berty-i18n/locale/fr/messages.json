@@ -45,7 +45,7 @@
       "skip": "PASSER ET FAIRE ÇA PLUS TARD"
     },
     "bluetooth": {
-      "header": "",
+      "header": "Communiquer sans internet (wifi ou cellulaire) en vous connectant directement avec vos amis près de vous",
       "optional": "Optionnel",
       "title": "Bluetooth",
       "desc": "Pour utiliser cette fonctionnalité, vous devez autoriser l'utilisation du Bluetooth sur votre téléphone",
