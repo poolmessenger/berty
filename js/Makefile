@@ -287,7 +287,7 @@ _write_gen_sum:
 
 ios/Frameworks/Bertybridge.framework: $(bridge_src)
 	go mod download -modfile=../go.mod
-	go run -mod=readonly -modfile=../go.mod golang.org/x/mobile/cmd/gomobile init
+	GO111MODULE=on go run -mod=readonly -modfile=../go.mod golang.org/x/mobile/cmd/gomobile init
 	@mkdir -p "ios/Frameworks"
 	GO111MODULE=on go run -mod=readonly -modfile=../go.mod golang.org/x/mobile/cmd/gomobile bind \
 		-o $@ \
@@ -331,7 +331,7 @@ vendor/bundle: Gemfile
 
 android/libs/gobridge.aar: $(bridge_src)
 	go mod download -modfile=../go.mod
-	go run -mod=readonly -modfile=../go.mod golang.org/x/mobile/cmd/gomobile init
+	GO111MODULE=on go run -mod=readonly -modfile=../go.mod golang.org/x/mobile/cmd/gomobile init
 	rm -fr android/build # remove broken cache
 	@mkdir -p "android/libs"
 	GO111MODULE=on go run -mod=readonly -modfile=../go.mod golang.org/x/mobile/cmd/gomobile bind \
